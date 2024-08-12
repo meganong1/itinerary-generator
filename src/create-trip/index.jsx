@@ -1,9 +1,15 @@
 import React from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Input } from "@/components/ui/input";
-import { SelectBudgetOptions, SelectTravelesList } from "@/constants/options";
+import {
+  AI_PROMPT,
+  SelectBudgetOptions,
+  SelectTravelesList,
+} from "@/constants/options";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { toast } from "sonner";
+import { chatSession } from "@/service/AIModal";
 
 function CreateTrip() {
   const [place, setPlace] = React.useState();
@@ -19,8 +25,31 @@ function CreateTrip() {
     console.log(formData);
   }, [formData]);
 
-  function onGenerateTrip() {
-    console.log(formData);
+  async function onGenerateTrip() {
+    if (
+      !formData.numberOfDays ||
+      !formData.location ||
+      !formData.budget ||
+      !formData.groupType
+    ) {
+      toast("Please fill all details");
+    }
+
+    const FINAL_PROMPT = AI_PROMPT.replace(
+      "{location}",
+      formData.location.label
+    )
+      .replace("{numberOfDays}", formData.numberOfDays)
+      .replace("{groupType}", formData.groupType)
+      .replace("{budget}", formData.budget)
+      .replace("{numberOfDays}", formData.numberOfDays);
+
+    console.log(FINAL_PROMPT);
+
+
+    const result= await chatSession.sendMessage(FINAL_PROMPT)
+
+    console.log(result.response.text())
   }
 
   return (
@@ -45,7 +74,7 @@ function CreateTrip() {
           <h2 className="text-xl my-3 font-medium">Trip duration in day(s)</h2>
           <Input
             onChange={(event) =>
-              handleChange("numberofDays", event.target.value)
+              handleChange("numberOfDays", event.target.value)
             }
             placeholder="Example: 4"
             type="number"
