@@ -21,12 +21,14 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/service/firebaseConfig";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function CreateTrip() {
   const [place, setPlace] = React.useState(null);
   const [formData, setFormData] = React.useState({});
   const [openDialog, setOpenDialog] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
 
   function handleChange(name, value) {
     setFormData((formField) => ({
@@ -87,8 +89,9 @@ function CreateTrip() {
 
   const SaveAiTrip = async (tripData) => {
     setLoading(true);
+    const docID = Date.now().toString();
+
     try {
-      const docID = Date.now().toString();
       const user = JSON.parse(localStorage.getItem("user"));
 
       const parsedTripData = JSON.parse(tripData);
@@ -106,6 +109,7 @@ function CreateTrip() {
       toast.error("Trip not saved.");
     } finally {
       setLoading(false);
+      navigate("/view-trip/" + docID); //redirect
     }
   };
 
