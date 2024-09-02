@@ -4,7 +4,7 @@ function PlacesToVisit({ trip }) {
   return (
     <div>
       <h2 className="font-bold text-lg">Places to Visit</h2>
-      {/* {trip.tripData?.itinerary?.map((item, index) => (
+      {/* {trip.tripData.map((item, index) => (
         <div key={index}>
           <h2>{item.day}</h2>
           {item.plan.map((place,index) => (
