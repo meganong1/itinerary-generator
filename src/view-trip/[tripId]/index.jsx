@@ -8,7 +8,6 @@ import InfoSection from "./components/InfoSection";
 import { useState } from "react";
 import Hotels from "./components/Hotels";
 import PlacesToVisit from "./components/PlacesToVisit";
-
 function Viewtrip() {
   const { tripId } = useParams();
   const [trip, setTrip] = useState([]);

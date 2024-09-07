@@ -1,8 +1,25 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { GrShareOption } from "react-icons/gr";
+import axios from "axios";
+import { useEffect } from "react";
+import { GetPlaceDetails } from "@/service/globalApi";
 
 function InfoSection({ trip }) {
+  useEffect(() => {
+    trip&&GetPlacePhoto();
+
+  }, [trip])
+
+  const GetPlacePhoto=async()=> {
+    const data={
+      textQuery:trip?.userSelection?.location?.label
+    }
+    const result=await GetPlaceDetails(data).then(resp=> {
+      console.log(resp.data)
+    })
+  }
+
   return (
     <div>
       <img
@@ -32,7 +49,6 @@ function InfoSection({ trip }) {
         <Button>
           <GrShareOption /> Share
         </Button>
-        
       </div>
     </div>
   );
