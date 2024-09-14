@@ -2,28 +2,35 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { GrShareOption } from "react-icons/gr";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GetPlaceDetails } from "@/service/globalApi";
+import { PHOTO_REF_URL } from "@/service/globalApi";
 
 function InfoSection({ trip }) {
+  const [PhotoUrl, setPhotoUrl] = useState();
+
   useEffect(() => {
-    trip&&GetPlacePhoto();
+    trip && GetPlacePhoto();
+  }, [trip]);
 
-  }, [trip])
-
-  const GetPlacePhoto=async()=> {
-    const data={
-      textQuery:trip?.userSelection?.location?.label
-    }
-    const result=await GetPlaceDetails(data).then(resp=> {
-      console.log(resp.data)
-    })
-  }
+  const GetPlacePhoto = async () => {
+    const data = {
+      textQuery: trip?.userSelection?.location?.label,
+    };
+    const result = await GetPlaceDetails(data).then((resp) => {
+      console.log(resp.data.places[0].photos[3].name);
+      const PhotoUrl = PHOTO_REF_URL.replace(
+        "{NAME}",
+        resp.data.places[0].photos[3].name
+      );
+      setPhotoUrl(PhotoUrl);
+    });
+  };
 
   return (
     <div>
       <img
-        src="/placeholder.svg"
+        src={PhotoUrl}
         className="h-[340px] w-full object-cover rounded-md"
       />
 
