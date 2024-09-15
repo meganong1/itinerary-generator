@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { GetPlaceDetails } from "@/service/globalApi";
 import { PHOTO_REF_URL } from "@/service/globalApi";
-
+import axios from "axios";
 function PlaceCardItem({ place }) {
   const [PhotoUrl, setPhotoUrl] = useState();
 
