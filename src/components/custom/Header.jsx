@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -58,22 +57,21 @@ function Header() {
 
   return (
     <div className="p-5 shadow-sm flex justify-between items-center px-5">
-      <Link to="/">
+      <a href="/">
         <img src="/logo.svg" />
-      </Link>
-
+      </a>
       {user ? (
         <div className="flex items-center gap-3">
-          <Link to="/create-trip">
+          <a href="/create-trip">
             <Button variant="outline" className="outline-1">
               Add Trip
             </Button>
-          </Link>
-          <Link to="/my-trips">
+          </a>
+          <a href="/my-trips">
             <Button variant="outline" className="outline-1">
               My Trips
             </Button>
-          </Link>
+          </a>
 
           <Popover>
             <PopoverTrigger>
