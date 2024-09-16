@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { googleLogout } from "@react-oauth/google";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { Link } from "react-router-dom"; 
+
+
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -54,29 +46,28 @@ function Header() {
         console.error("Error fetching user profile:", error);
       });
   };
-
   return (
     <div className="p-5 shadow-sm flex justify-between items-center px-5">
-      <a href="/">
-        <img src="/logo.svg" />
-      </a>
+      <Link to="/">
+        <img src="/logo.svg" alt="Logo" />
+      </Link>
       {user ? (
         <div className="flex items-center gap-3">
-          <a href="/create-trip">
+          <Link to="/create-trip">
             <Button variant="outline" className="outline-1">
               Add Trip
             </Button>
-          </a>
-          <a href="/my-trips">
+          </Link>
+          <Link to="/my-trips"> 
             <Button variant="outline" className="outline-1">
               My Trips
             </Button>
-          </a>
+          </Link>
 
           <Popover>
             <PopoverTrigger>
               {user.picture && (
-                <img src={user.picture} className="rounded-full h-10 w-10" />
+                <img src={user.picture} className="rounded-full h-10 w-10" alt="User" />
               )}
             </PopoverTrigger>
             <PopoverContent>
@@ -95,7 +86,6 @@ function Header() {
       ) : (
         <Button onClick={() => setOpenDialog(true)}>Sign In</Button>
       )}
-      <Dialog open={openDialog}></Dialog>
 
       <Dialog open={openDialog}>
         <DialogContent>

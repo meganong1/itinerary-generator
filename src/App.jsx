@@ -1,11 +1,24 @@
-import Hero from "./components/custom/Hero";
+import React from "react";
 import "./App.css";
+import { Routes } from "react-router-dom";
+import { Route } from "react-router-dom";
+import Hero from "./components/custom/Hero";
+import CreateTrip from "./create-trip/index.jsx";
+import ViewTrip from "./view-trip/[tripId]/index.jsx";
+import MyTrips from "./my-trips/index.jsx";
+import Header from "./components/custom/Header";
 
 function App() {
   return (
-    <>
-      <Hero />
-    </>
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Hero />} />
+        <Route path="/create-trip" element={<CreateTrip />} />
+        <Route path="/view-trip/:tripId" element={<ViewTrip />} />
+        <Route path="/my-trips" element={<MyTrips />} />
+      </Routes>
+    </div>
   );
 }
 
