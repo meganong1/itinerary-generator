@@ -41,3 +41,4 @@ createRoot(document.getElementById("root")).render(
     </GoogleOAuthProvider>
   </StrictMode>
 );
+export default main;

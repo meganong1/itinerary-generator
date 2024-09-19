@@ -1,7 +1,6 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom"; 
 import "./App.css";
-import { Routes } from "react-router-dom";
-import { Route } from "react-router-dom";
 import Hero from "./components/custom/Hero";
 import CreateTrip from "./create-trip/index.jsx";
 import ViewTrip from "./view-trip/[tripId]/index.jsx";
