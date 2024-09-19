@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,6 @@ import {
   SelectTravelesList,
 } from "@/constants/options";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 import { toast } from "sonner";
 import { chatSession } from "@/service/AIModal";
 import {
@@ -24,10 +23,10 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 function CreateTrip() {
-  const [place, setPlace] = React.useState(null);
-  const [formData, setFormData] = React.useState({});
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [place, setPlace] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(name, value) {
@@ -93,7 +92,6 @@ function CreateTrip() {
 
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-
       const parsedTripData = JSON.parse(tripData);
 
       await setDoc(doc(db, "AITrips", docID), {
@@ -202,6 +200,7 @@ function CreateTrip() {
             ))}
           </div>
         </div>
+
         <div className="justify-end flex my-5">
           <Button onClick={onGenerateTrip} disabled={loading}>
             {loading ? (
@@ -212,7 +211,7 @@ function CreateTrip() {
           </Button>
         </div>
 
-        <Dialog open={openDialog}>
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
           <DialogContent>
             <DialogHeader>
               <DialogDescription>

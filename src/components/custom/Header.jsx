@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { googleLogout } from "@react-oauth/google";
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { Link } from "react-router-dom"; 
-
-
+import { Link } from "react-router-dom";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -58,7 +65,7 @@ function Header() {
               Add Trip
             </Button>
           </Link>
-          <Link to="/my-trips"> 
+          <Link to="/my-trips">
             <Button variant="outline" className="outline-1">
               My Trips
             </Button>
@@ -67,11 +74,16 @@ function Header() {
           <Popover>
             <PopoverTrigger>
               {user.picture && (
-                <img src={user.picture} className="rounded-full h-10 w-10" alt="User" />
+                <img
+                  src={user.picture}
+                  className="rounded-full h-10 w-10"
+                  alt="User"
+                />
               )}
             </PopoverTrigger>
             <PopoverContent>
               <h2
+                className="cursor-pointer"
                 onClick={() => {
                   googleLogout();
                   localStorage.clear();
