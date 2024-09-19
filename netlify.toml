@@ -1,8 +1,10 @@
 [build]
-  publish = "build"  
-  command = "npm run build"  
+  command = "npm run build"
+  publish = "dist"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+node_version = "20.13.1" 

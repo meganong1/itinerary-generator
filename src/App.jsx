@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom"; 
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Hero from "./components/custom/Hero";
 import CreateTrip from "./create-trip/index.jsx";
