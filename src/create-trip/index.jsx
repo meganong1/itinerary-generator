@@ -102,6 +102,7 @@ function CreateTrip() {
       });
 
       console.log("Trip saved successfully!");
+      window.location.reload(); 
     } catch (error) {
       console.error("Trip not saved. Error:", error);
       toast.error("Trip not saved.");
