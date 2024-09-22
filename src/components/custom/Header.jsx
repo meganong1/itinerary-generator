@@ -1,31 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { googleLogout } from "@react-oauth/google";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-} from "@/components/ui/dialog";
-import { useGoogleLogin } from "@react-oauth/google";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Header() {
+function Header({ isLoggedIn, onLoginStatusChange }) {
   const [user, setUser] = useState(null);
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const login = useGoogleLogin({
     onSuccess: (codeResp) => GetUserProfile(codeResp),
@@ -44,21 +32,21 @@ function Header() {
         }
       )
       .then((resp) => {
-        console.log(resp);
         localStorage.setItem("user", JSON.stringify(resp.data));
-        setOpenDialog(false);
-        window.location.reload();
+        setUser(resp.data);
+        onLoginStatusChange(true);
       })
       .catch((error) => {
         console.error("Error fetching user profile:", error);
       });
   };
+
   return (
     <div className="p-5 shadow-sm flex justify-between items-center px-5">
       <Link to="/">
         <img src="/logo.svg" alt="Logo" />
       </Link>
-      {user ? (
+      {isLoggedIn ? (
         <div className="flex items-center gap-3">
           <Link to="/create-trip">
             <Button variant="outline" className="outline-1">
@@ -73,7 +61,7 @@ function Header() {
 
           <Popover>
             <PopoverTrigger>
-              {user.picture && (
+              {user?.picture && (
                 <img
                   src={user.picture}
                   className="rounded-full h-10 w-10"
@@ -87,7 +75,8 @@ function Header() {
                 onClick={() => {
                   googleLogout();
                   localStorage.clear();
-                  window.location.reload();
+                  setUser(null);
+                  onLoginStatusChange(false); 
                 }}
               >
                 Logout
@@ -96,21 +85,8 @@ function Header() {
           </Popover>
         </div>
       ) : (
-        <Button onClick={() => setOpenDialog(true)}>Sign In</Button>
+        <Button onClick={login}>Sign In</Button>
       )}
-
-      <Dialog open={openDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogDescription>
-              <img className="" src="/logo.svg" alt="logo" />
-              <Button onClick={login} className="w-full mt-5">
-                Sign In With Google
-              </Button>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

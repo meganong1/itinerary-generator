@@ -8,6 +8,7 @@ import { PHOTO_REF_URL } from "@/service/globalApi";
 
 function InfoSection({ trip }) {
   const [PhotoUrl, setPhotoUrl] = useState();
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
 
   useEffect(() => {
     trip && GetPlacePhoto();
@@ -26,6 +27,13 @@ function InfoSection({ trip }) {
       setPhotoUrl(PhotoUrl);
     });
   };
+
+  function handleShare() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    setIsLinkCopied(true);
+
+  }
 
   return (
     <div>
@@ -53,8 +61,14 @@ function InfoSection({ trip }) {
           </h2>
         </div>
 
-        <Button>
-          <GrShareOption /> Share
+        <Button onClick={handleShare} disabled={isLinkCopied}>
+          {isLinkCopied ? (
+            "Link copied to clipboard"
+          ) : (
+            <>
+              <GrShareOption /> Share
+            </>
+          )}
         </Button>
       </div>
     </div>

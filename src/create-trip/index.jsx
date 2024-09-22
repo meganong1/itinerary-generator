@@ -22,33 +22,22 @@ import { db } from "@/service/firebaseConfig";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-function CreateTrip() {
+function CreateTrip({ isLoggedIn }) {
   const [place, setPlace] = useState(null);
   const [formData, setFormData] = useState({});
-  const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleChange(name, value) {
+  const handleChange = (name, value) => {
     setFormData((formField) => ({
       ...formField,
       [name]: value,
     }));
-  }
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
-  const login = useGoogleLogin({
-    onSuccess: (codeResp) => GetUserProfile(codeResp),
-    onError: (error) => console.log(error),
-  });
+  };
 
   const onGenerateTrip = async () => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      setOpenDialog(true);
+    if (!isLoggedIn) {
+      toast("Please sign in");
       return;
     }
 
@@ -59,6 +48,11 @@ function CreateTrip() {
       !formData.groupType
     ) {
       toast("Please fill all details");
+      return;
+    }
+
+    if (formData.numberOfDays <= 0) {
+      toast("Please enter 1 or more days")
       return;
     }
 
@@ -75,8 +69,7 @@ function CreateTrip() {
 
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
-      const responseText = result.response.text();
-      console.log("AI Response Text:", responseText);
+      const responseText = await result.response.text();
       SaveAiTrip(responseText);
     } catch (error) {
       console.error("Error generating trip:", error);
@@ -87,7 +80,6 @@ function CreateTrip() {
   };
 
   const SaveAiTrip = async (tripData) => {
-    setLoading(true);
     const docID = Date.now().toString();
 
     try {
@@ -100,42 +92,17 @@ function CreateTrip() {
         userEmail: user?.email,
         id: docID,
       });
-
       console.log("Trip saved successfully!");
-      window.location.reload(); 
     } catch (error) {
       console.error("Trip not saved. Error:", error);
       toast.error("Trip not saved.");
     } finally {
-      setLoading(false);
       navigate("/view-trip/" + docID); //redirect
     }
   };
 
-  const GetUserProfile = (tokenInfo) => {
-    axios
-      .get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo.access_token}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenInfo?.access_token}`,
-            Accept: "application/json",
-          },
-        }
-      )
-      .then((resp) => {
-        console.log(resp);
-        localStorage.setItem("user", JSON.stringify(resp.data));
-        setOpenDialog(false);
-        onGenerateTrip();
-      })
-      .catch((error) => {
-        console.error("Error fetching user profile:", error);
-      });
-  };
-
   return (
-    <div className="sm:px10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
+    <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
       <h2 className="font-bold text-3xl">Add Travel Preferences</h2>
       <div>
         <div className="mt-5">
@@ -168,9 +135,9 @@ function CreateTrip() {
         <div className="mt-5">
           <h2 className="text-xl my-3 font-medium">Budget</h2>
           <div className="grid grid-cols-3 gap-5 cursor-pointer">
-            {SelectBudgetOptions.map((item, index) => (
+            {SelectBudgetOptions.map((item) => (
               <div
-                key={index}
+                key={item.id}
                 onClick={() => handleChange("budget", item.title)}
                 className={`p-4 border rounded-lg hover:shadow-lg ${
                   formData?.budget === item.title && "shadow-lg border-black"
@@ -186,17 +153,17 @@ function CreateTrip() {
         <div className="mt-5">
           <h2 className="text-xl my-3 font-medium">Group Type</h2>
           <div className="grid grid-cols-4 gap-5 cursor-pointer">
-            {SelectTravelesList.map((item, index) => (
+            {SelectTravelesList.map((item) => (
               <div
-                key={index}
+                key={item.id}
+                onClick={() => handleChange("groupType", item.title)}
                 className={`p-4 border rounded-lg hover:shadow-lg ${
                   formData?.groupType === item.title && "shadow-lg border-black"
                 }`}
-                onClick={() => handleChange("groupType", item.title)}
               >
                 <h2 className="text-4xl">{item.icon}</h2>
                 <h2 className="font-bold text-lg">{item.title}</h2>
-                <h2>{item.desc}</h2>
+                <p>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -211,19 +178,6 @@ function CreateTrip() {
             )}
           </Button>
         </div>
-
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogDescription>
-                <img src="/logo.svg" alt="logo" />
-                <Button onClick={login} className="w-full mt-5">
-                  Sign In With Google
-                </Button>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );
