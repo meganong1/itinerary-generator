@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function Header({ isLoggedIn, onLoginStatusChange }) {
   const [user, setUser] = useState(null);
-
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {

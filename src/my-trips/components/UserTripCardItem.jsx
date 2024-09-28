@@ -33,7 +33,7 @@ function UserTripCardItem({ trip }) {
 
 
         <img
-          className="object-cover rounded-xl align-middle aspect-square"
+          className="object-cover rounded-xl w-80 h-80 align-middle" // Fixed width and height for square images
           src={PhotoUrl ? PhotoUrl : "/placeholder.svg"}
         />
         <div>

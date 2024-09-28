@@ -35,8 +35,8 @@ function MyTrips() {
 
   return (
     <div className = 'sm:px10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10'>
-      <h1 className='font-bold text-3xl'>My Trips</h1>
-      <div className='grid grid-cols-2 md:grid-cols-3 gap-5 '>
+      <h1 className='font-bold text-3xl mb-5'>My Trips</h1>
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-5 '>
         {userTrips.map((trip,index) => (
             <UserTripCardItem trip={trip}/>
         ))}

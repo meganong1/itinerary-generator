@@ -10,7 +10,7 @@ function Hero() {
         Your journey begins here!
       </h1>
       <Link to="/create-trip">
-        <Button>Let's get started</Button>
+        <Button>Let's start planning</Button>
       </Link>
     </div>
   );

@@ -66,7 +66,7 @@ function InfoSection({ trip }) {
             "Link copied to clipboard"
           ) : (
             <>
-              <GrShareOption /> Share
+              <GrShareOption className="mr-1" />  Share
             </>
           )}
         </Button>

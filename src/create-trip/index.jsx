@@ -169,6 +169,8 @@ function CreateTrip({ isLoggedIn }) {
           </div>
         </div>
 
+
+
         <div className="justify-end flex my-5">
           <Button onClick={onGenerateTrip} disabled={loading}>
             {loading ? (
