@@ -10,8 +10,20 @@ function Hero() {
         Your journey begins here!
       </h1>
       <Link to="/create-trip">
-        <Button>Let's start planning</Button>
+        <Button className="items-center">Let's start planning</Button>
       </Link>
+
+      <p>
+        Thanks for visiting! The site is no longer active due to the costs of
+        the Places API, but you can watch the demo{" "}
+        <a
+          className="underline text-blue-500"
+          href="https://youtu.be/iMZJ3PK59FQ?feature=shared"
+        >
+          here
+        </a>
+        .
+      </p>
     </div>
   );
 }
