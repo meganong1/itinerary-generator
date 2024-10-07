@@ -12,10 +12,9 @@ function Hero() {
       <Link to="/create-trip">
         <Button className="items-center">Let's start planning</Button>
       </Link>
-
       <p>
         Thanks for visiting! The site is no longer active due to the costs of
-        the Places API, but you can watch the demo{" "}
+        the Places API but you can watch the demo{" "}
         <a
           className="underline text-blue-500"
           href="https://youtu.be/iMZJ3PK59FQ?feature=shared"
